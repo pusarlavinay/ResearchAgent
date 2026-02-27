@@ -48,10 +48,10 @@ const SystemMetrics = () => {
   });
 
   const performanceData = [
-    { name: 'Retrieval', efficiency: 85, color: theme.palette.primary.main },
-    { name: 'Memory', efficiency: 78, color: theme.palette.success.main },
-    { name: 'Storage', efficiency: 73, color: theme.palette.warning.main },
-    { name: 'Consensus', efficiency: 92, color: theme.palette.primary.light },
+    { name: 'Retrieval', efficiency: quantumData ? Math.round(quantumData.coherence_threshold * 100) : 85, color: theme.palette.primary.main },
+    { name: 'Memory', efficiency: neuromorphicData?.synaptic_weights ? Math.min(100, neuromorphicData.synaptic_weights) : 78, color: theme.palette.success.main },
+    { name: 'Storage', efficiency: holographicData?.hologram_density ? Math.round(holographicData.hologram_density * 100) : 73, color: theme.palette.warning.main },
+    { name: 'Consensus', efficiency: swarmData?.consensus_threshold ? Math.round(swarmData.consensus_threshold * 100) : 92, color: theme.palette.primary.light },
     { name: 'Timeline', efficiency: 67, color: theme.palette.info?.main || '#38bdf8' },
     { name: 'Verification', efficiency: 88, color: theme.palette.error.main },
   ];
@@ -127,56 +127,81 @@ const SystemMetrics = () => {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom sx={{ color: theme.palette.primary.main }}>
+          <Paper sx={{ p: 3, height: 400 }}>
+            <Typography variant="h6" gutterBottom sx={{ color: theme.palette.primary.main, mb: 2 }}>
               Service Performance
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={performanceData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="efficiency" fill={theme.palette.primary.main} />
-              </BarChart>
-            </ResponsiveContainer>
+            {performanceData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart data={performanceData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+                  <XAxis dataKey="name" stroke={theme.palette.text.secondary} />
+                  <YAxis stroke={theme.palette.text.secondary} domain={[0, 100]} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: theme.palette.background.paper, 
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 8
+                    }} 
+                  />
+                  <Bar dataKey="efficiency" fill={theme.palette.primary.main} radius={[8, 8, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 320 }}>
+                <Typography variant="body2" color="text.secondary">Loading performance data...</Typography>
+              </Box>
+            )}
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom sx={{ color: theme.palette.warning.main }}>
+          <Paper sx={{ p: 3, height: 400 }}>
+            <Typography variant="h6" gutterBottom sx={{ color: theme.palette.warning.main, mb: 2 }}>
               Agent Distribution
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={swarmData ? [
-                    {
-                      name: 'Explorer',
-                      value: swarmData.specialization_distribution?.explorer || 0,
-                      fill: theme.palette.primary.main,
-                    },
-                    {
-                      name: 'Exploiter',
-                      value: swarmData.specialization_distribution?.exploiter || 0,
-                      fill: theme.palette.success.main,
-                    },
-                    {
-                      name: 'Scout',
-                      value: swarmData.specialization_distribution?.scout || 0,
-                      fill: theme.palette.warning.main,
-                    },
-                  ] : []}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  dataKey="value"
-                  label
-                />
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            {swarmData ? (
+              <ResponsiveContainer width="100%" height={320}>
+                <PieChart>
+                  <Pie
+                    data={[
+                      {
+                        name: 'Explorer',
+                        value: swarmData.specialization_distribution?.explorer || 20,
+                        fill: theme.palette.primary.main,
+                      },
+                      {
+                        name: 'Exploiter',
+                        value: swarmData.specialization_distribution?.exploiter || 20,
+                        fill: theme.palette.success.main,
+                      },
+                      {
+                        name: 'Scout',
+                        value: swarmData.specialization_distribution?.scout || 10,
+                        fill: theme.palette.warning.main,
+                      },
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    dataKey="value"
+                    label={({ name, value }) => `${name}: ${value}`}
+                    labelLine={true}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: theme.palette.background.paper, 
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 8
+                    }} 
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 320 }}>
+                <Typography variant="body2" color="text.secondary">Loading agent data...</Typography>
+              </Box>
+            )}
           </Paper>
         </Grid>
 
@@ -264,38 +289,80 @@ const SystemMetrics = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
-                  <AutoGraph fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Retrieval Active</Typography>
+                  <AutoGraph fontSize="large" sx={{ color: quantumData ? theme.palette.success.main : theme.palette.grey[500] }} />
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                    {quantumData ? 'Retrieval Active' : 'Retrieval Offline'}
+                  </Typography>
+                  {quantumData && (
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {Math.round(quantumData.coherence_threshold * 100)}%
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
-                  <Memory fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Memory Learning</Typography>
+                  <Memory fontSize="large" sx={{ color: neuromorphicData ? theme.palette.success.main : theme.palette.grey[500] }} />
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                    {neuromorphicData ? 'Memory Learning' : 'Memory Offline'}
+                  </Typography>
+                  {neuromorphicData && (
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {neuromorphicData.synaptic_weights} weights
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
-                  <Storage fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Storage Ready</Typography>
+                  <Storage fontSize="large" sx={{ color: holographicData ? theme.palette.success.main : theme.palette.grey[500] }} />
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                    {holographicData ? 'Storage Ready' : 'Storage Offline'}
+                  </Typography>
+                  {holographicData && (
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {holographicData.documents_stored} docs
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
-                  <GroupWork fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Agents Online</Typography>
+                  <GroupWork fontSize="large" sx={{ color: swarmData ? theme.palette.success.main : theme.palette.grey[500] }} />
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                    {swarmData ? 'Agents Online' : 'Agents Offline'}
+                  </Typography>
+                  {swarmData && (
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {swarmData.total_agents} active
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
-                  <AutoGraph fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Timeline Signals</Typography>
+                  <AutoGraph fontSize="large" sx={{ color: stats ? theme.palette.success.main : theme.palette.grey[500] }} />
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                    {stats ? 'Timeline Signals' : 'Timeline Offline'}
+                  </Typography>
+                  {stats && (
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {stats.chunks} chunks
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
-                  <Verified fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Verification Ready</Typography>
+                  <Verified fontSize="large" sx={{ color: stats ? theme.palette.success.main : theme.palette.grey[500] }} />
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>
+                    {stats ? 'Verification Ready' : 'Verification Offline'}
+                  </Typography>
+                  {stats && (
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {stats.documents} verified
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
             </Grid>

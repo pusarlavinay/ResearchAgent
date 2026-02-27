@@ -66,6 +66,12 @@ export const AppProvider = ({ children }) => {
   const [notifications, setNotifications] = useState(() =>
     loadFromStorage('notifications', [])
   );
+  const [comparisonResult, setComparisonResult] = useState(() =>
+    loadFromStorage('comparisonResult', null)
+  );
+  const [selectedDocsForComparison, setSelectedDocsForComparison] = useState(() =>
+    loadFromStorage('selectedDocsForComparison', [])
+  );
 
   const addNotification = (notification) => {
     const newNotification = {
@@ -112,6 +118,14 @@ export const AppProvider = ({ children }) => {
     saveToStorage('notifications', notifications);
   }, [notifications]);
 
+  useEffect(() => {
+    saveToStorage('comparisonResult', comparisonResult);
+  }, [comparisonResult]);
+
+  useEffect(() => {
+    saveToStorage('selectedDocsForComparison', selectedDocsForComparison);
+  }, [selectedDocsForComparison]);
+
   const value = {
     conversations,
     setConversations,
@@ -136,6 +150,10 @@ export const AppProvider = ({ children }) => {
     addNotification,
     clearNotifications,
     markNotificationRead,
+    comparisonResult,
+    setComparisonResult,
+    selectedDocsForComparison,
+    setSelectedDocsForComparison,
   };
 
   return (

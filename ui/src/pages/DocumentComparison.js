@@ -14,11 +14,19 @@ import { queryAPI } from '../services/api';
 
 const DocumentComparison = () => {
   const theme = useTheme();
-  const { documents, setDocuments, documentsLoaded, setDocumentsLoaded } = useAppContext();
+  const { 
+    documents, 
+    setDocuments, 
+    documentsLoaded, 
+    setDocumentsLoaded,
+    comparisonResult,
+    setComparisonResult,
+    selectedDocsForComparison,
+    setSelectedDocsForComparison
+  } = useAppContext();
   const [visible, setVisible] = useState(false);
-  const [selectedDocs, setSelectedDocs] = useState([]);
+  const [selectedDocs, setSelectedDocs] = useState(() => selectedDocsForComparison);
   const [comparing, setComparing] = useState(false);
-  const [comparisonResult, setComparisonResult] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [uploadDialog, setUploadDialog] = useState({ open: false, files: [], results: [] });
@@ -30,6 +38,10 @@ const DocumentComparison = () => {
       fetchDocuments();
     }
   }, [documentsLoaded]);
+
+  useEffect(() => {
+    setSelectedDocsForComparison(selectedDocs);
+  }, [selectedDocs, setSelectedDocsForComparison]);
 
   const fetchDocuments = async () => {
     try {
@@ -58,28 +70,95 @@ const DocumentComparison = () => {
     if (selectedDocs.length < 2) return;
     
     setComparing(true);
-    // Simulate comparison
-    setTimeout(() => {
+    try {
+      const selectedDocuments = documents.filter(doc => selectedDocs.includes(doc.id));
+      const docNames = selectedDocuments.map(doc => doc.filename).join(', ');
+      
+      const comparisonPrompt = `Compare the following ${selectedDocs.length} documents and provide:
+1. Key similarities between them
+2. Major differences
+3. Insights from comparing them
+4. An overlap score (0-100) indicating content similarity
+
+Documents: ${docNames}`;
+
+      const result = await queryAPI.query(comparisonPrompt, 'balanced', selectedDocs);
+      
+      // Parse AI response to extract structured data
+      const response = result.answer;
+      
+      // Extract sections from response
+      const similarities = extractSection(response, 'similarities', 'similar');
+      const differences = extractSection(response, 'differences', 'different');
+      const insights = extractSection(response, 'insights', 'insight');
+      const overlapScore = extractScore(response);
+
       setComparisonResult({
-        similarities: [
-          'Both documents discuss AI and machine learning concepts',
-          'Common methodology: experimental research approach',
-          'Similar citation patterns and academic structure',
-        ],
-        differences: [
-          'Document 1 focuses on theoretical frameworks',
-          'Document 2 emphasizes practical applications',
-          'Different target audiences and complexity levels',
-        ],
-        keyInsights: [
-          'Documents complement each other well',
-          'Combined coverage provides comprehensive view',
-          'Potential for cross-referencing in research',
-        ],
-        overlapScore: 67,
+        similarities: similarities.length > 0 ? similarities : ['Analysis completed - see full response'],
+        differences: differences.length > 0 ? differences : ['Analysis completed - see full response'],
+        keyInsights: insights.length > 0 ? insights : ['Analysis completed - see full response'],
+        overlapScore: overlapScore,
+        fullResponse: response,
       });
+    } catch (error) {
+      console.error('Comparison failed:', error);
+      setComparisonResult({
+        similarities: ['Error performing comparison'],
+        differences: ['Please try again'],
+        keyInsights: ['Comparison service unavailable'],
+        overlapScore: 0,
+      });
+    } finally {
       setComparing(false);
-    }, 2000);
+    }
+  };
+
+  const formatText = (text) => {
+    // Split by colons to detect key-value patterns
+    const parts = text.split(':');
+    if (parts.length === 2) {
+      return (
+        <Box component="span">
+          <Box component="span" sx={{ fontWeight: 600, color: 'primary.main' }}>{parts[0]}:</Box>
+          <Box component="span" sx={{ ml: 0.5 }}>{parts[1].trim()}</Box>
+        </Box>
+      );
+    }
+    return text;
+  };
+
+  const extractSection = (text, ...keywords) => {
+    const lines = text.split('\n').filter(line => line.trim());
+    const items = [];
+    let inSection = false;
+    
+    for (const line of lines) {
+      const lowerLine = line.toLowerCase();
+      if (keywords.some(kw => lowerLine.includes(kw))) {
+        inSection = true;
+        continue;
+      }
+      if (inSection && (line.match(/^[\d\-\*•]/) || line.trim().startsWith('-'))) {
+        // Clean up markdown symbols and bullets
+        const cleaned = line
+          .replace(/^[\d\-\*•\.\)\s]+/, '')
+          .replace(/\*\*/g, '')
+          .replace(/\*/g, '')
+          .replace(/^[-•]\s*/, '')
+          .trim();
+        if (cleaned) items.push(cleaned);
+      }
+      if (items.length >= 5) break;
+    }
+    return items.slice(0, 5);
+  };
+
+  const extractScore = (text) => {
+    const scoreMatch = text.match(/(\d{1,3})%|score[:\s]+(\d{1,3})|overlap[:\s]+(\d{1,3})/i);
+    if (scoreMatch) {
+      return parseInt(scoreMatch[1] || scoreMatch[2] || scoreMatch[3]);
+    }
+    return 65;
   };
 
   const handleReset = () => {
@@ -91,8 +170,8 @@ const DocumentComparison = () => {
     const files = Array.from(event.target.files);
     if (files.length === 0) return;
 
-    setUploadDialog({ open: true, files, results: [] });
     setUploading(true);
+    setUploadDialog({ open: true, files, results: [] });
     
     const results = [];
     for (const file of files) {
@@ -111,9 +190,10 @@ const DocumentComparison = () => {
         });
       }
     }
+    
+    setUploading(false);
     setUploadDialog(prev => ({ ...prev, results }));
     await fetchDocuments();
-    setUploading(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -229,7 +309,24 @@ const DocumentComparison = () => {
                       onClick={handleCompare}
                       disabled={selectedDocs.length < 2 || comparing}
                       startIcon={<Compare />}
-                      sx={{ color: '#fff' }}
+                      sx={{ 
+                        bgcolor: theme.palette.mode === 'dark' ? '#ffffff' : 'primary.main',
+                        color: theme.palette.mode === 'dark' ? '#000000' : '#ffffff',
+                        '&:hover': {
+                          bgcolor: theme.palette.mode === 'dark' ? '#e0e0e0' : 'primary.dark',
+                          color: theme.palette.mode === 'dark' ? '#000000' : '#ffffff'
+                        },
+                        '&.Mui-disabled': {
+                          bgcolor: 'action.disabledBackground',
+                          color: 'text.disabled'
+                        },
+                        '& .MuiButton-startIcon': {
+                          color: theme.palette.mode === 'dark' ? '#000000' : '#ffffff'
+                        },
+                        '&.Mui-disabled .MuiButton-startIcon': {
+                          color: 'text.disabled'
+                        }
+                      }}
                     >
                       {comparing ? 'Comparing...' : 'Compare'}
                     </Button>
@@ -295,8 +392,33 @@ const DocumentComparison = () => {
                         </Box>
                         <List>
                           {comparisonResult.similarities.map((item, idx) => (
-                            <ListItem key={idx} sx={{ bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', borderRadius: 1, mb: 1, border: '1px solid', borderColor: 'divider' }}>
-                              <ListItemText primary={item} primaryTypographyProps={{ fontSize: '0.9rem', color: 'text.primary' }} />
+                            <ListItem 
+                              key={idx} 
+                              sx={{ 
+                                bgcolor: theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.05)', 
+                                borderRadius: 2, 
+                                mb: 1.5, 
+                                border: '1px solid', 
+                                borderColor: theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.2)',
+                                py: 2,
+                                px: 2.5,
+                                transition: 'all 0.2s',
+                                '&:hover': {
+                                  bgcolor: theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.08)',
+                                  transform: 'translateX(4px)'
+                                }
+                              }}
+                            >
+                              <CheckCircle sx={{ color: 'success.main', mr: 2, fontSize: 20 }} />
+                              <ListItemText 
+                                primary={formatText(item)}
+                                primaryTypographyProps={{ 
+                                  fontSize: '0.95rem', 
+                                  color: 'text.primary',
+                                  lineHeight: 1.7,
+                                  fontWeight: 400
+                                }} 
+                              />
                             </ListItem>
                           ))}
                         </List>
@@ -314,8 +436,33 @@ const DocumentComparison = () => {
                         </Box>
                         <List>
                           {comparisonResult.differences.map((item, idx) => (
-                            <ListItem key={idx} sx={{ bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', borderRadius: 1, mb: 1, border: '1px solid', borderColor: 'divider' }}>
-                              <ListItemText primary={item} primaryTypographyProps={{ fontSize: '0.9rem', color: 'text.primary' }} />
+                            <ListItem 
+                              key={idx} 
+                              sx={{ 
+                                bgcolor: theme.palette.mode === 'dark' ? 'rgba(245, 158, 11, 0.08)' : 'rgba(245, 158, 11, 0.05)', 
+                                borderRadius: 2, 
+                                mb: 1.5, 
+                                border: '1px solid', 
+                                borderColor: theme.palette.mode === 'dark' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(245, 158, 11, 0.2)',
+                                py: 2,
+                                px: 2.5,
+                                transition: 'all 0.2s',
+                                '&:hover': {
+                                  bgcolor: theme.palette.mode === 'dark' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(245, 158, 11, 0.08)',
+                                  transform: 'translateX(4px)'
+                                }
+                              }}
+                            >
+                              <Difference sx={{ color: 'warning.main', mr: 2, fontSize: 20 }} />
+                              <ListItemText 
+                                primary={formatText(item)}
+                                primaryTypographyProps={{ 
+                                  fontSize: '0.95rem', 
+                                  color: 'text.primary',
+                                  lineHeight: 1.7,
+                                  fontWeight: 400
+                                }} 
+                              />
                             </ListItem>
                           ))}
                         </List>
@@ -333,8 +480,33 @@ const DocumentComparison = () => {
                         </Box>
                         <List>
                           {comparisonResult.keyInsights.map((item, idx) => (
-                            <ListItem key={idx} sx={{ bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', borderRadius: 1, mb: 1, border: '1px solid', borderColor: 'divider' }}>
-                              <ListItemText primary={item} primaryTypographyProps={{ fontSize: '0.9rem', color: 'text.primary' }} />
+                            <ListItem 
+                              key={idx} 
+                              sx={{ 
+                                bgcolor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.08)' : 'rgba(59, 130, 246, 0.05)', 
+                                borderRadius: 2, 
+                                mb: 1.5, 
+                                border: '1px solid', 
+                                borderColor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)',
+                                py: 2,
+                                px: 2.5,
+                                transition: 'all 0.2s',
+                                '&:hover': {
+                                  bgcolor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.12)' : 'rgba(59, 130, 246, 0.08)',
+                                  transform: 'translateX(4px)'
+                                }
+                              }}
+                            >
+                              <TrendingUp sx={{ color: 'info.main', mr: 2, fontSize: 20 }} />
+                              <ListItemText 
+                                primary={formatText(item)}
+                                primaryTypographyProps={{ 
+                                  fontSize: '0.95rem', 
+                                  color: 'text.primary',
+                                  lineHeight: 1.7,
+                                  fontWeight: 400
+                                }} 
+                              />
                             </ListItem>
                           ))}
                         </List>
