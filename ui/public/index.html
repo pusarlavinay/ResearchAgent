@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f1115" />
+    <meta
+      name="description"
+      content="Professional research workspace for querying and analyzing private documents"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Performance Optimizations -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <title>Research Agent | Document Intelligence</title>
+    
+    <!-- Prevent FOUC -->
+    <style>
+      body { visibility: hidden; opacity: 0; }
+      .app-loaded { visibility: visible; opacity: 1; transition: opacity 0.3s ease; }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: 'IBM Plex Sans', sans-serif;">
+        <h2>JavaScript Required</h2>
+        <p>This application requires JavaScript to function properly.</p>
+      </div>
+    </noscript>
+    <div id="root"></div>
+    
+    <!-- Loading Performance Script -->
+    <script>
+      window.addEventListener('load', () => {
+        document.body.classList.add('app-loaded');
+      });
+    </script>
+  </body>
+</html>

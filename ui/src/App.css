@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+.soft-elevated {
+  background: rgba(23, 27, 34, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.soft-elevated:hover {
+  border-color: rgba(74, 163, 255, 0.25);
+  box-shadow: 0 12px 28px rgba(15, 17, 21, 0.45);
+  transform: translateY(-2px);
+}

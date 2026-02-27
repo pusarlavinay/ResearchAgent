@@ -1,0 +1,153 @@
+/* Responsive Design Enhancements */
+
+/* Mobile-first approach */
+@media (max-width: 600px) {
+  /* Reduce padding on mobile */
+  .MuiBox-root {
+    padding: 8px !important;
+  }
+
+  /* Stack cards vertically */
+  .MuiGrid-item {
+    padding: 8px !important;
+  }
+
+  /* Smaller font sizes */
+  h1, .MuiTypography-h1 {
+    font-size: 1.75rem !important;
+  }
+
+  h2, .MuiTypography-h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3, .MuiTypography-h3 {
+    font-size: 1.25rem !important;
+  }
+
+  h4, .MuiTypography-h4 {
+    font-size: 1.125rem !important;
+  }
+
+  /* Adjust button sizes */
+  .MuiButton-root {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Make tables scrollable */
+  .MuiTable-root {
+    display: block;
+    overflow-x: auto;
+  }
+
+  /* Adjust dialog width */
+  .MuiDialog-paper {
+    margin: 16px !important;
+    max-width: calc(100% - 32px) !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 601px) and (max-width: 960px) {
+  .MuiContainer-root {
+    padding: 16px !important;
+  }
+
+  /* Adjust grid spacing */
+  .MuiGrid-container {
+    margin: -12px !important;
+  }
+
+  .MuiGrid-item {
+    padding: 12px !important;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 961px) {
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better hover effects */
+  .MuiCard-root:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .MuiIconButton-root {
+    padding: 12px !important;
+  }
+
+  .MuiButton-root {
+    min-height: 44px !important;
+  }
+
+  /* Remove hover effects on touch devices */
+  .MuiCard-root:hover {
+    transform: none !important;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 960px) and (orientation: landscape) {
+  /* Reduce vertical spacing */
+  .MuiBox-root {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  /* Hide navigation */
+  .MuiDrawer-root,
+  .MuiAppBar-root {
+    display: none !important;
+  }
+
+  /* Expand content */
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Prevent page breaks in cards */
+  .MuiCard-root {
+    page-break-inside: avoid;
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Sharper borders */
+  .MuiCard-root,
+  .MuiPaper-root {
+    border-width: 0.5px;
+  }
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode specific responsive adjustments */
+@media (prefers-color-scheme: dark) {
+  /* Better contrast on mobile */
+  @media (max-width: 600px) {
+    .MuiPaper-root {
+      background-color: rgba(26, 29, 35, 0.95) !important;
+    }
+  }
+}

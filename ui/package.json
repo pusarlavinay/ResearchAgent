@@ -1,0 +1,55 @@
+{
+  "name": "ai-research-agent-ui",
+  "version": "1.0.0",
+  "description": "AI Research Agent - Revolutionary RAG tool for querying private document PDF sets",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.0",
+    "@mui/lab": "^5.0.0-alpha.150",
+    "@mui/material": "^5.15.0",
+    "axios": "^1.6.0",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.0",
+    "katex": "^0.16.33",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hotkeys-hook": "^4.4.0",
+    "react-intersection-observer": "^9.5.0",
+    "react-markdown": "^9.0.0",
+    "react-query": "^3.39.0",
+    "react-router-dom": "^6.8.0",
+    "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "recharts": "^2.8.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
