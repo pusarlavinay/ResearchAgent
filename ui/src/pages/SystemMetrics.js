@@ -67,7 +67,7 @@ const SystemMetrics = () => {
       <CardContent>
         <Box display="flex" alignItems="center" gap={1} mb={1}>
           <Box sx={{ color: color, display: 'flex', alignItems: 'center' }}>{icon}</Box>
-          <Typography variant="h6" sx={{ color: color }}>
+          <Typography variant="h6" sx={{ color: color, fontWeight: 600 }}>
             {title}
           </Typography>
         </Box>
@@ -265,37 +265,37 @@ const SystemMetrics = () => {
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
                   <AutoGraph fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>Retrieval Active</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Retrieval Active</Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
                   <Memory fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>Memory Learning</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Memory Learning</Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
                   <Storage fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>Storage Ready</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Storage Ready</Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
                   <GroupWork fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>Agents Online</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Agents Online</Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
                   <AutoGraph fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>Timeline Signals</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Timeline Signals</Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
                 <Box textAlign="center">
                   <Verified fontSize="large" sx={{ color: theme.palette.primary.main }} />
-                  <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>Verification Ready</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500 }}>Verification Ready</Typography>
                 </Box>
               </Grid>
             </Grid>

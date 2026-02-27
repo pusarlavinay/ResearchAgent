@@ -141,7 +141,7 @@ const DocumentComparison = () => {
           <Box sx={{ mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
               <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
-                <Compare />
+                <Compare sx={{ color: '#ffffff' }} />
               </Avatar>
               <Box>
                 <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
@@ -198,7 +198,7 @@ const DocumentComparison = () => {
                             key={doc.id}
                             sx={{
                               bgcolor: selectedDocs.includes(doc.id) 
-                                ? (theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.12)')
+                                ? (theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.08)')
                                 : 'transparent',
                               borderRadius: 1,
                               mb: 1,
@@ -276,7 +276,7 @@ const DocumentComparison = () => {
                   ) : (
                     <Box>
                       {/* Overlap Score */}
-                      <Paper sx={{ p: 3, mb: 3, textAlign: 'center', bgcolor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.12)', border: '1px solid', borderColor: 'primary.main' }}>
+                      <Paper sx={{ p: 3, mb: 3, textAlign: 'center', bgcolor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.08)', border: '1px solid', borderColor: 'primary.main' }}>
                         <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
                           {comparisonResult.overlapScore}%
                         </Typography>

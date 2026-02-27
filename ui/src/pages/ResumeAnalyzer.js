@@ -175,6 +175,7 @@ const ResumeAnalyzer = () => {
                         fontWeight: 600,
                         mx: 'auto',
                         mb: 1,
+                        color: '#ffffff',
                       }}
                     >
                       {resumeData.analysis.overall_score || resumeData.analysis.overallScore}%

@@ -198,8 +198,8 @@ const QueryInterface = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start', mb: 3 }}>
         {!isUser && (
-          <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40, mr: 2, color: '#fff' }}>
-            <SmartToy />
+          <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40, mr: 2 }}>
+            <SmartToy sx={{ color: '#ffffff' }} />
           </Avatar>
         )}
         
@@ -369,7 +369,7 @@ const QueryInterface = () => {
                             p: 1.5,
                             cursor: 'pointer',
                             bgcolor: selectedDocuments.includes(doc.id) 
-                              ? (theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.12)')
+                              ? (theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.08)')
                               : 'background.paper',
                             border: '1px solid',
                             borderColor: selectedDocuments.includes(doc.id) ? 'primary.main' : 'divider',
@@ -452,8 +452,8 @@ const QueryInterface = () => {
                       
                       {loading && (
                         <Box sx={{ display: 'flex', mb: 3 }}>
-                          <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40, mr: 2, color: '#fff' }}>
-                            <SmartToy sx={{ color: '#fff' }} />
+                          <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40, mr: 2 }}>
+                            <SmartToy sx={{ color: '#ffffff' }} />
                           </Avatar>
                           <Paper elevation={0} sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 3, bgcolor: 'background.paper' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -476,7 +476,7 @@ const QueryInterface = () => {
                         <Box sx={{ 
                           px: 2, 
                           py: 1, 
-                          bgcolor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.12)',
+                          bgcolor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.08)',
                           borderBottom: '1px solid',
                           borderColor: 'divider',
                           display: 'flex', 
@@ -523,7 +523,7 @@ const QueryInterface = () => {
                           disabled={loading || !query.trim()}
                           sx={{
                             bgcolor: loading || !query.trim() ? 'action.disabledBackground' : 'primary.main',
-                            color: 'white',
+                            color: '#ffffff',
                             '&:hover': { bgcolor: 'primary.dark' },
                             width: 40,
                             height: 40,

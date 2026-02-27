@@ -191,10 +191,9 @@ const Dashboard = () => {
                           width: 48,
                           height: 48,
                           mr: 2,
-                          color: '#ffffff',
                         }}
                       >
-                        {stat.icon}
+                        <Box sx={{ color: '#ffffff' }}>{stat.icon}</Box>
                       </Avatar>
                       <Box>
                         <Typography variant="h4" sx={{ fontWeight: 700, color: stat.color }}>
@@ -244,10 +243,9 @@ const Dashboard = () => {
                         height: 64,
                         mx: 'auto',
                         mb: 2,
-                        color: '#ffffff',
                       }}
                     >
-                      {action.icon}
+                      <Box sx={{ color: '#ffffff' }}>{action.icon}</Box>
                     </Avatar>
                     <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
                       {action.title}
@@ -293,10 +291,9 @@ const Dashboard = () => {
                         height: 32,
                         mr: 1,
                         bgcolor: 'primary.main',
-                        color: '#ffffff',
                       }}
                     >
-                      {tech.icon}
+                      <Box sx={{ color: '#ffffff' }}>{tech.icon}</Box>
                     </Avatar>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                       {tech.name}
