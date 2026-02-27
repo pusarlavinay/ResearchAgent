@@ -32,6 +32,14 @@ from app.services.resume_analyzer import analyze_resume_with_gemini
 # Import API extensions
 from app.api_extensions import router as api_router
 
+
+def ensure_postgres_available():
+    if not db_manager.pg_pool:
+        raise HTTPException(
+            status_code=503,
+            detail="PostgreSQL is unavailable. Please check database service and retry."
+        )
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
@@ -61,6 +69,7 @@ async def root():
 async def upload_document(file: UploadFile = File(...)):
     """Upload and process a research document"""
     try:
+        ensure_postgres_available()
         filename = os.path.basename(file.filename or "")
         if not filename:
             raise HTTPException(status_code=400, detail="Missing filename")
@@ -97,6 +106,7 @@ async def upload_document(file: UploadFile = File(...)):
 async def query_documents(request: QueryRequest):
     """Query the research documents using FRAG workflow"""
     try:
+        ensure_postgres_available()
         response = await process_enhanced_query(request.query, request.document_ids)
         return response
     except Exception as e:
@@ -105,6 +115,7 @@ async def query_documents(request: QueryRequest):
 @app.get("/documents")
 async def list_documents():
     """List all uploaded documents"""
+    ensure_postgres_available()
     async with db_manager.pg_pool.acquire() as conn:
         documents = await conn.fetch(
             "SELECT id, filename, created_at FROM documents ORDER BY created_at DESC"
@@ -124,6 +135,7 @@ async def list_documents():
 @app.delete("/documents/{document_id}")
 async def delete_document(document_id: int):
     """Delete a document and all its chunks"""
+    ensure_postgres_available()
     async with db_manager.pg_pool.acquire() as conn:
         # Check if document exists
         doc = await conn.fetchrow("SELECT filename FROM documents WHERE id = $1", document_id)
@@ -157,6 +169,7 @@ async def delete_document(document_id: int):
 @app.post("/feedback")
 async def submit_feedback(feedback_data: dict):
     """Submit user feedback for query responses"""
+    ensure_postgres_available()
     async with db_manager.pg_pool.acquire() as conn:
         await conn.execute("""
             INSERT INTO feedback (message_id, feedback_type, comment, created_at)
@@ -199,6 +212,7 @@ async def health_check():
 @app.get("/stats")
 async def get_stats():
     """Get system statistics"""
+    ensure_postgres_available()
     async with db_manager.pg_pool.acquire() as conn:
         doc_count = await conn.fetchval("SELECT COUNT(*) FROM documents")
         chunk_count = await conn.fetchval("SELECT COUNT(*) FROM chunks")
@@ -211,4 +225,4 @@ async def get_stats():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=3001)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

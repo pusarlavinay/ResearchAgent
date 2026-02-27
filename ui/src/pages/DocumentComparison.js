@@ -294,7 +294,16 @@ Documents: ${docNames}`;
                             <ListItemText
                               primary={doc.filename}
                               secondary={new Date(doc.created_at).toLocaleDateString()}
-                              primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: 500 }}
+                              primaryTypographyProps={{ 
+                                fontSize: '0.9rem', 
+                                fontWeight: 500,
+                                noWrap: true,
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                              }}
+                              secondaryTypographyProps={{
+                                noWrap: true
+                              }}
                             />
                           </ListItem>
                         ))}

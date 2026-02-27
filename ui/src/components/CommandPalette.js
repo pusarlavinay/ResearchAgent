@@ -17,6 +17,7 @@ import {
   CloudUpload,
   Analytics,
   Dashboard,
+  Compare,
   DarkMode,
   LightMode,
   FileDownload,
@@ -50,6 +51,13 @@ const CommandPalette = ({ open, onClose, onToggleTheme, onExport, onClearChat })
       icon: <Psychology />,
       action: () => navigate('/resume'),
       keywords: ['cv', 'job', 'skills', 'analyze'],
+    },
+    {
+      id: 'compare',
+      label: 'Go to Document Comparison',
+      icon: <Compare />,
+      action: () => navigate('/compare'),
+      keywords: ['compare', 'comparison', 'similarities', 'differences'],
     },
     {
       id: 'upload',

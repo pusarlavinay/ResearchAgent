@@ -1,5 +1,6 @@
 import asyncio
 import aiohttp
+import json
 from typing import List, Dict, Any
 from app.core.config import settings
 from app.models.schemas import Chunk
@@ -94,7 +95,6 @@ Select the best draft and improve it. Respond with JSON:
                         result = await response.json()
                         content = result["choices"][0]["message"]["content"]
                         
-                        import json
                         try:
                             parsed = json.loads(content)
                             return {
@@ -135,7 +135,6 @@ Select the best draft and improve it. Respond with JSON:
                         result = await response.json()
                         content = result.get("response", "")
                         
-                        import json
                         try:
                             parsed = json.loads(content)
                             return {

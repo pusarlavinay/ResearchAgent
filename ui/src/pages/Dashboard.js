@@ -31,6 +31,7 @@ import {
   Groups,
   AccessTime,
   Bolt,
+  Compare,
 } from '@mui/icons-material';
 import { useQuery } from 'react-query';
 import { queryAPI } from '../services/api';
@@ -73,6 +74,13 @@ const Dashboard = () => {
       icon: <CloudUpload sx={{ fontSize: 40 }} />,
       color: '#10b981',
       path: '/upload',
+    },
+    {
+      title: 'Compare Documents',
+      description: 'Find similarities and differences',
+      icon: <Compare sx={{ fontSize: 40 }} />,
+      color: '#ec4899',
+      path: '/compare',
     },
     {
       title: 'System Metrics',
@@ -126,7 +134,7 @@ const Dashboard = () => {
               />
               <Chip
                 icon={<TrendingUp />}
-                label="89% Accuracy"
+                label="92% Consensus"
                 color="info"
                 variant="outlined"
               />
@@ -220,7 +228,7 @@ const Dashboard = () => {
         </Typography>
         <Grid container spacing={2} sx={{ mb: 3 }}>
           {quickActions.map((action, index) => (
-            <Grid item xs={12} sm={6} md={3} key={action.title}>
+            <Grid item xs={12} sm={6} md={2.4} key={action.title}>
               <Grow in={visible} timeout={1000 + index * 200}>
                 <Card
                   sx={{
@@ -341,5 +349,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
 
