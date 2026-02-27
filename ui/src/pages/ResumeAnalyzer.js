@@ -114,7 +114,7 @@ const ResumeAnalyzer = () => {
                   startIcon={<CloudUpload />}
                   onClick={() => fileInputRef.current?.click()}
                   fullWidth
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2, color: 'text.primary', borderColor: 'divider' }}
                 >
                   Choose PDF File
                 </Button>
@@ -144,6 +144,7 @@ const ResumeAnalyzer = () => {
                   onClick={analyzeResume}
                   disabled={resumeData.loading || !resumeData.resume || !resumeData.jobDescription.trim()}
                   fullWidth
+                  sx={{ color: '#fff' }}
                 >
                   {resumeData.loading ? 'Analyzing...' : 'Analyze Resume'}
                 </Button>

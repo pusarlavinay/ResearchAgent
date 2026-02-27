@@ -26,6 +26,7 @@ import {
   Speed,
   Hub,
   Circle,
+  Compare,
 } from '@mui/icons-material';
 
 const Sidebar = ({ open, onToggle, isMobile }) => {
@@ -47,6 +48,13 @@ const Sidebar = ({ open, onToggle, isMobile }) => {
       icon: <Search />,
       path: '/query',
       description: 'Search and analyze documents',
+    },
+    {
+      id: 'compare',
+      label: 'Compare Documents',
+      icon: <Compare />,
+      path: '/compare',
+      description: 'Find similarities & differences',
     },
     {
       id: 'resume',

@@ -13,6 +13,7 @@ import QueryInterface from './pages/QueryInterface';
 import SystemMetrics from './pages/SystemMetrics';
 import DocumentUpload from './pages/DocumentUpload';
 import ResumeAnalyzer from './pages/ResumeAnalyzer';
+import DocumentComparison from './pages/DocumentComparison';
 import LoadingScreen from './components/LoadingScreen';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import CommandPalette from './components/CommandPalette';
@@ -120,6 +121,7 @@ function AppContent() {
                 <Route path="/" element={<Box sx={{ p: { xs: 2, sm: 3 }, height: '100%', overflow: 'auto' }}><Dashboard /></Box>} />
                 <Route path="/dashboard" element={<Box sx={{ p: { xs: 2, sm: 3 }, height: '100%', overflow: 'auto' }}><Dashboard /></Box>} />
                 <Route path="/query" element={<QueryInterface />} />
+                <Route path="/compare" element={<DocumentComparison />} />
                 <Route path="/resume" element={<Box sx={{ p: { xs: 2, sm: 3 }, height: '100%', overflow: 'auto' }}><ResumeAnalyzer /></Box>} />
                 <Route path="/metrics" element={<Box sx={{ p: { xs: 2, sm: 3 }, height: '100%', overflow: 'auto' }}><SystemMetrics /></Box>} />
                 <Route path="/upload" element={<Box sx={{ p: { xs: 2, sm: 3 }, height: '100%', overflow: 'auto' }}><DocumentUpload /></Box>} />

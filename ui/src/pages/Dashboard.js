@@ -257,7 +257,7 @@ const Dashboard = () => {
                     </Typography>
                     <Button
                       endIcon={<ArrowForward />}
-                      sx={{ color: action.color }}
+                      sx={{ color: action.color, fontWeight: 500 }}
                     >
                       Get Started
                     </Button>

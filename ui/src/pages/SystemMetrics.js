@@ -74,7 +74,7 @@ const SystemMetrics = () => {
         <Typography variant="h4" sx={{ color: color, fontWeight: 'bold' }}>
           {value}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.85rem' }}>
           {subtitle}
         </Typography>
       </CardContent>
