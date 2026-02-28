@@ -50,7 +50,7 @@ const SystemMetrics = () => {
   const performanceData = [
     { name: 'Retrieval', efficiency: quantumData ? Math.round(quantumData.coherence_threshold * 100) : 85, color: theme.palette.primary.main },
     { name: 'Memory', efficiency: neuromorphicData?.synaptic_weights ? Math.min(100, neuromorphicData.synaptic_weights) : 78, color: theme.palette.success.main },
-    { name: 'Storage', efficiency: holographicData?.hologram_density ? Math.round(holographicData.hologram_density * 100) : 73, color: theme.palette.warning.main },
+    { name: 'Storage', efficiency: holographicData?.hologram_density != null ? Math.round(holographicData.hologram_density) : 73, color: theme.palette.warning.main },
     { name: 'Consensus', efficiency: swarmData?.consensus_threshold ? Math.round(swarmData.consensus_threshold * 100) : 92, color: theme.palette.primary.light },
     { name: 'Timeline', efficiency: 67, color: theme.palette.info?.main || '#38bdf8' },
     { name: 'Verification', efficiency: 88, color: theme.palette.error.main },
@@ -266,7 +266,7 @@ const SystemMetrics = () => {
               <Grid item xs={6}>
                 <Typography variant="body2" color="text.secondary">Hologram Density</Typography>
                 <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>
-                  {holographicData?.hologram_density ? `${Math.round(holographicData.hologram_density * 100)}%` : 'N/A'}
+                  {holographicData?.hologram_density != null ? `${holographicData.hologram_density}%` : 'N/A'}
                 </Typography>
               </Grid>
             </Grid>

@@ -91,10 +91,11 @@ export const queryAPI = {
       return response.data;
     } catch (error) {
       return {
-        documents_stored: 1000,
-        matrix_size_mb: 12.5,
-        compression_ratio: 80,
-        hologram_density: 0.73
+        documents_stored: 0,
+        matrix_size_mb: 2.25,
+        compression_ratio: 80.0,
+        hologram_density: 0.0,
+        status: 'ready'
       };
     }
   },

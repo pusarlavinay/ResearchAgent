@@ -33,16 +33,22 @@ async def get_holographic_efficiency():
         async with db_manager.pg_pool.acquire() as conn:
             doc_count = await conn.fetchval("SELECT COUNT(*) FROM documents") or 0
     
-    # Calculate metrics
+    # Calculate metrics with safe defaults
     compression_ratio = holographic_storage.get_compression_ratio()
-    matrix_size_mb = (holographic_storage.dimensions ** 2 * 16) / (1024 * 1024)  # complex128 = 16 bytes
-    hologram_density = len(holographic_storage.reference_waves) / holographic_storage.dimensions if holographic_storage.dimensions > 0 else 0
+    
+    # Calculate matrix size in MB (complex128 = 16 bytes)
+    dimensions = holographic_storage.dimensions if holographic_storage.dimensions > 0 else 384
+    matrix_size_mb = (dimensions * dimensions * 16) / (1024 * 1024)
+    
+    # Calculate hologram density safely
+    num_reference_waves = len(holographic_storage.reference_waves)
+    hologram_density = (num_reference_waves / dimensions) if dimensions > 0 else 0.0
     
     return {
         "documents_stored": doc_count,
-        "compression_ratio": compression_ratio,
+        "compression_ratio": round(compression_ratio, 1),
         "matrix_size_mb": round(matrix_size_mb, 2),
-        "hologram_density": f"{hologram_density:.2%}",
+        "hologram_density": round(hologram_density * 100, 2),  # Convert to percentage
         "status": "active" if doc_count > 0 else "ready"
     }
 
