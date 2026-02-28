@@ -1,12 +1,4 @@
----
-title: AI Research Agent
-emoji: 
-colorFrom: blue
-colorTo: green
-sdk: static
-app_port: 7860
-pinned: false
----
+
 
 #  AI Research Agent (RAG)
 
