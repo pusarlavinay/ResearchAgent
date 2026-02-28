@@ -51,6 +51,8 @@ const QueryInterface = () => {
 
   useEffect(() => {
     setVisible(true);
+
+    
     if (!documentsLoaded) fetchDocuments();
     else setLoadingDocs(false);
   }, [documentsLoaded]);
