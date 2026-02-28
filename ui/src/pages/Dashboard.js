@@ -55,20 +55,6 @@ const Dashboard = () => {
 
   const quickActions = [
     {
-      title: 'Query Documents',
-      description: 'Ask questions about your documents',
-      icon: <Search sx={{ fontSize: 40 }} />,
-      color: '#3b82f6',
-      path: '/query',
-    },
-    {
-      title: 'Analyze Resume',
-      description: 'AI-powered resume evaluation',
-      icon: <Psychology sx={{ fontSize: 40 }} />,
-      color: '#8b5cf6',
-      path: '/resume',
-    },
-    {
       title: 'Upload Files',
       description: 'Add documents to workspace',
       icon: <CloudUpload sx={{ fontSize: 40 }} />,
@@ -76,11 +62,25 @@ const Dashboard = () => {
       path: '/upload',
     },
     {
+      title: 'Query Documents',
+      description: 'Ask questions about your documents',
+      icon: <Search sx={{ fontSize: 40 }} />,
+      color: '#3b82f6',
+      path: '/query',
+    },
+    {
       title: 'Compare Documents',
       description: 'Find similarities and differences',
       icon: <Compare sx={{ fontSize: 40 }} />,
       color: '#ec4899',
       path: '/compare',
+    },
+    {
+      title: 'Analyze Resume',
+      description: 'AI-powered resume evaluation',
+      icon: <Psychology sx={{ fontSize: 40 }} />,
+      color: '#8b5cf6',
+      path: '/resume',
     },
     {
       title: 'System Metrics',

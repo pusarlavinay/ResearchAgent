@@ -208,23 +208,23 @@ const QueryInterface = () => {
           sx={{
             p: 2.5,
             maxWidth: '75%',
-            bgcolor: isUser ? 'primary.main' : 'background.paper',
-            color: isUser ? '#fff' : 'text.primary',
+            bgcolor: isUser ? '#ffffff' : 'background.paper',
+            color: isUser ? '#000000' : 'text.primary',
             borderRadius: 3,
-            border: isUser ? 'none' : '1px solid',
-            borderColor: 'divider',
+            border: '1px solid',
+            borderColor: isUser ? '#e0e0e0' : 'divider',
           }}
         >
           {isUser ? (
             <Box>
-              <Typography variant="body1" sx={{ lineHeight: 1.7, color: '#fff' }}>
+              <Typography variant="body1" sx={{ lineHeight: 1.7, color: '#000000' }}>
                 {message.content}
               </Typography>
               {message.selectedDocCount !== undefined && (
                 <Chip
                   size="small"
                   label={`${message.selectedDocCount} source${message.selectedDocCount !== 1 ? 's' : ''}`}
-                  sx={{ mt: 1, height: 22, bgcolor: 'rgba(255,255,255,0.25)', color: '#fff', fontWeight: 500 }}
+                  sx={{ mt: 1, height: 22, bgcolor: 'rgba(59, 130, 246, 0.15)', color: '#000000', fontWeight: 500 }}
                 />
               )}
             </Box>
